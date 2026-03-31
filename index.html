@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mitarbeiter Übersicht</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f2f2f2;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #222;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 10px;
+      min-height: 140px;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 90px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin: 15px;
+      display: block;
+      border: 2px solid #ddd;
+      flex-shrink: 0;
+    }
+
+    .card-content {
+      padding: 15px 10px;
+      flex: 1;
+    }
+
+    .card-content h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .card-content p {
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .details {
+      padding: 20px;
+    }
+
+    .details h2 {
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    .details p {
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mitarbeiter Übersicht</h1>
+
+  <div class="container">
+
+    <div class="card" onclick="showDetails('Max Mustermann', '32', 'Teamleiter', 'Elektriker', 'Elektroniker für Energie- und Gebäudetechnik', 'Sachkunde §34a', 'Ja', 'Ja', 'B, C', 'Thomas Müller', 'bilder/max.jpg')">
+      <img src="bilder/max.jpg" alt="Max Mustermann">
+      <div class="card-content">
+        <h2>Max Mustermann</h2>
+        <p>32 Jahre</p>
+        <p>Teamleiter</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showDetails('Lisa Becker', '28', 'Mitarbeiterin', 'Kauffrau', 'Büromanagement', 'Unterweisung §34a', 'Nein', 'Ja', 'B', 'Max Mustermann', 'bilder/max.jpg')">
+      <img src="bilder/lisa.jpg" alt="Lisa Becker">
+      <div class="card-content">
+        <h2>Lisa Becker</h2>
+        <p>28 Jahre</p>
+        <p>Mitarbeiterin</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="detailImage" src="" alt="Bild">
+      <div class="details">
+        <h2 id="detailName"></h2>
+        <p><strong>Alter:</strong> <span id="detailAge"></span></p>
+        <p><strong>Funktion:</strong> <span id="detailRole"></span></p>
+        <p><strong>Erlernter Beruf:</strong> <span id="detailJob"></span></p>
+        <p><strong>Ausbildung:</strong> <span id="detailTraining"></span></p>
+        <p><strong>Sicherheitsdienst:</strong> <span id="detailSecurity"></span></p>
+        <p><strong>Ersthelfer/in:</strong> <span id="detailFirstAid"></span></p>
+        <p><strong>Brandschutzhelfer/in:</strong> <span id="detailFire"></span></p>
+        <p><strong>Führerschein:</strong> <span id="detailLicense"></span></p>
+        <p><strong>Vorgesetzter:</strong> <span id="detailBoss"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showDetails(name, age, role, job, training, security, firstAid, fire, license, boss, image) {
+      document.getElementById('detailName').innerText = name;
+      document.getElementById('detailAge').innerText = age;
+      document.getElementById('detailRole').innerText = role;
+      document.getElementById('detailJob').innerText = job;
+      document.getElementById('detailTraining').innerText = training;
+      document.getElementById('detailSecurity').innerText = security;
+      document.getElementById('detailFirstAid').innerText = firstAid;
+      document.getElementById('detailFire').innerText = fire;
+      document.getElementById('detailLicense').innerText = license;
+      document.getElementById('detailBoss').innerText = boss;
+      document.getElementById('detailImage').src = image;
+
+      document.getElementById('detailModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('detailModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('detailModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>
